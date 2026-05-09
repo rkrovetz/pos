@@ -4,8 +4,7 @@ The current assessment is based on a revised version of the Wikipedia dataset.  
 
 I extracted the contexts that contained one of the 15 target words, and I tagged them using two language models, a small language model (en_core_web_sm), and a transformer (en_core_web_trf).  I examined two conditions: where the taggers agree on the tagging of the target word, and where they disagree.  All of the tagging was done using spaCy 3.7.5.
 
-I wanted to have 20 tokens to assess in the agree set, and another 20 in the
-disagree set.  I did not find enough tokens for each condition for each word to meet that sampling amount.  There are two reasons for this.  First, there was too much agreement for some words on the incorrect tag (e.g., for the word "precious", the adverbs were tagged as adjectives).  Second, part-of-speech distribution can be very skewed.  For example, the word "cold" is used much less as an adverb than as an adjective.
+I wanted to have 20 tokens to assess in the agree set, and another 20 in the disagree set.  I did not find enough tokens for each condition for each word to meet that sampling amount.  There are two reasons for this.  First, there was too much agreement for some words on the incorrect tag (e.g., for the word "precious", the adverbs were tagged as adjectives).  Second, part-of-speech distribution can be very skewed.  For example, the word "cold" is used much less as an adverb than as an adjective.
 
 For some words and expressions, the tagging depended on context (e.g., "real-valued").  In contrast, for the word "short", the expression "short-lived" was incorrectly tagged in all of the contexts I examined.
 
