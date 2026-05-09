@@ -17,7 +17,7 @@ The repository also includes:
 - documentation describing the methodology and annotation issues
 
 ## Contents
-
+```
 datasets/
     pos-test-collection.csv                 Evaluation dataset
     wikipedia-assessment-of-15-words.txt    Assessment of adjective ambiguity
@@ -30,3 +30,4 @@ docs/
 LICENSE
 
 CITATION
+```
