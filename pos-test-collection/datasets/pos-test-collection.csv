@@ -1,4 +1,4 @@
-Target Word, Target POS, Examples, Stanford Tag, Stanford Tag Correct?, TnT Tag, TnT Tag Correct?, spaCy v0.101 Tag, spaCy v0.101.0 Tag Correct?,spaCy 2.2.3 Tag, spaCy 2.2.3 Tag Correct?,SpaCy 3.7.5-trf Tag, spaCy 3.7.5-trf Tag Correct?, Stanford Tag Upper, Stanford Tag Upper Correct?, TnT Upper Tag, TnT Upper Tag Correct?,SpaCy 3.7.5-trf Upper Tag, SpaCy-3.7.5-trf Upper Tag Correct?,
+Target Word, Target POS, Sentence, Stanford Tag, Stanford Tag Correct?, TnT Tag, TnT Tag Correct?, spaCy v0.101 Tag, spaCy v0.101.0 Tag Correct?,spaCy 2.2.3 Tag, spaCy 2.2.3 Tag Correct?,SpaCy 3.7.5-trf Tag, spaCy 3.7.5-trf Tag Correct?, Stanford Tag Upper, Stanford Tag Upper Correct?, TnT Upper Tag, TnT Upper Tag Correct?,SpaCy 3.7.5-trf Upper Tag, SpaCy-3.7.5-trf Upper Tag Correct?,
 abandon, NN, She danced with abandon., VB, NO, VB, NO, NN, YES, NN, YES, NN, YES, NNP, NO, NNP, NO, NNP, NO,
 abandon, VB, She will never abandon her child., VB, YES, VB, YES, VB, YES, VB, YES, VB, YES, VB, YES, NNP, NO, VB, YES,
 abode, NN, Her abode was in the hills., NN, YES, NN, YES, NN, YES, NN, YES, NN, YES, NNP, NO, VBD, NO, NN, YES,
