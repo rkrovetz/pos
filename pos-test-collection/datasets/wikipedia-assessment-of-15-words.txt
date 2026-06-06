@@ -61,7 +61,8 @@ These lines below are the individual judgments for the AGREE and DISAGREE
 datasets. I used "***GOOD*** to indicate that the tagging is correct, and
 ***BAD*** to indicate that it is not.   I provide the target word, the tag
 assigned using the small language model, the tag assigned using the transformer
-model, the tagged context (using the small languge model), the untagged context,and the source (the title of the Wikipedia article) where the untagged context
+model, the tagged context (using the small languge model), the untagged context,
+and the source (the title of the Wikipedia article) where the untagged context
 is from.  Each of these fields is separated by a tab.
 
 For the DISAGREE dataset, I use "***BAD**" if both tags were bad, and
