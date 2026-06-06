@@ -1,10 +1,11 @@
 I assessed 15 words that were incorrectly tagged by the transformer model on the test collection.  All of the words were ambiguous between adjectives and other parts of speech.  They were broken down into three groups: JJ/NN (adjective/noun), JJ/RB (adjective/adverb), and JJ/VBG (adjective/verb-form ending in "ing").
 
-The current assessment is based on a revised version of the Wikipedia dataset.  I cleaned it up by replacing HTML entities with the corresponding characters.  I also removed duplicate text that appeared in different articles.  I only included contexts that were between 3 and 70 words long.   The dataset is available at: lexicalresearch.com/data/tagged_wikipedia_subset.tsv.gz
+The assessment is based on a revised version of the Wikipedia dataset.  I cleaned it up by replacing HTML entities with the corresponding characters.  I also removed duplicate text that appeared in different articles.  I only included contexts that were between 3 and 70 words long.   The dataset is available at: lexicalresearch.com/data/tagged_wikipedia_subset.tsv.gz
 
 I extracted the contexts that contained one of the 15 target words, and I tagged them using two language models, a small language model (en_core_web_sm), and a transformer (en_core_web_trf).  I examined two conditions: where the taggers agree on the tagging of the target word, and where they disagree.  All of the tagging was done using spaCy 3.7.5.
 
-I wanted to have 20 tokens to assess in the agree set, and another 20 in the disagree set.  I did not find enough tokens for each condition for each word to meet that sampling amount.  There are two reasons for this.  First, there was too much agreement for some words on the incorrect tag (e.g., for the word "precious", the adverbs were tagged as adjectives).  Second, part-of-speech distribution can be very skewed.  For example, the word "cold" is used much less as an adverb than as an adjective.
+I wanted to have 20 tokens to assess in the agree set, and another 20 in the
+disagree set.  I did not find enough tokens for each condition for each word to meet that sampling amount.  There are two reasons for this.  First, there was too much agreement for some words on the incorrect tag (e.g., for the word "precious", the adverbs were tagged as adjectives).  Second, part-of-speech distribution can be very skewed.  For example, the word "cold" is used much less as an adverb than as an adjective.
 
 For some words and expressions, the tagging depended on context (e.g., "real-valued").  In contrast, for the word "short", the expression "short-lived" was incorrectly tagged in all of the contexts I examined.
 
@@ -14,13 +15,14 @@ JJ/NN aerial, camp, crash, material, orange
 
             AGREE               DISAGREE
             
-aerial      20/20                 3/12
+aerial    19+1/20                 3/12
 camp        13/15                18/20
 crash        9/20                12/13
 material    20/20                13/20
-orange      11/20                13/20
+orange      16/20                13/20
 
-Subtotal:   73/95 (77%)          59/85 (69%)
+Subtotal:   78/95 (82%)          59/85 (69%)
+Total: 180 evaluable instances
 
 
 JJ/RB cold, dead, precious, real, short
@@ -28,36 +30,38 @@ JJ/RB cold, dead, precious, real, short
             AGREE               DISAGREE
 
 cold        10/11                 1/11
-dead        17/20                18/20
+dead        17/20                16/20
 precious    10/10                 1/1
 real        16/20                20/20
-short       10/20                 3/20
+short       10/20                10/20
 
-Subtotal:   63/81 (78%)          43/72  (60%)
-
+Subtotal:   63/81 (78%)          48/72  (67%)
+Total: 153 evaluable instances
 
 JJ/VGB acting, binding, pressing, prevailing, standing
 
             AGREE               DISAGREE
             
 acting       8/19                 10/20              
-binding     12+5/20              11+3/20
-pressing    18/20                10/20
-prevailing   3/13                10+1/20
-standing    19/20                 6+4/20
+binding   12+5/20               11+3/20
+pressing    18/20                 10/20
+prevailing   3/13                 10/20
+standing    19/20                9+1/20
 
-Subtotal:   65/92 (71%)          55/100  (55%)
+Subtotal:   65/92 (71%)          54/100  (54%)
+Total: 192 evaluable instances
+
+Grand total: 180+153+192 = 525 (out of possible 600 (87.5%))
 
 The numbers X+Y means "GOOD+UNSURE".  I scored them as if "UNSURE" was considered correct.
 
-Total:  The range is 71% to 78% for Agree, and 55% to 69% for disagree.
+Total:  The range is 71% to 83% for Agree, and 55% to 69% for disagree.
 
 These lines below are the individual judgments for the AGREE and DISAGREE 
 datasets. I used "***GOOD*** to indicate that the tagging is correct, and
 ***BAD*** to indicate that it is not.   I provide the target word, the tag
 assigned using the small language model, the tag assigned using the transformer
-model, the tagged context (using the small languge model), the untagged context,
-and the source (the title of the Wikipedia article) where the untagged context
+model, the tagged context (using the small languge model), the untagged context,and the source (the title of the Wikipedia article) where the untagged context
 is from.  Each of these fields is separated by a tab.
 
 For the DISAGREE dataset, I use "***BAD**" if both tags were bad, and
@@ -129,7 +133,7 @@ AGREE  Dataset
 
 ***GOOD***aerial	JJ	JJ	An/DT aerial/JJ view/NN of/IN the/DT village/NN ,/, provided/VBN by/IN Google/NNP Maps/NNP ./.  An aerial view of the village, provided by Google Maps.	Greenside
 
-***GOOD***aerial	JJ	JJ	Aachen/NNP Gate/NNP )/-RRB- */: aerial/JJ towers/NNS of/IN shortwave/JJ broadcasting/NN facility/NN	Aachen Gate) * aerial towers of shortwave broadcasting facility	Jülich
+***UNSURE***aerial	JJ	JJ	Aachen/NNP Gate/NNP )/-RRB- */: aerial/JJ towers/NNS of/IN shortwave/JJ broadcasting/NN facility/NN	Aachen Gate) * aerial towers of shortwave broadcasting facility	Jülich
 
 ***GOOD***aerial	JJ	JJ	'/`` Aanval/NNP '/'' :/: An/DT aerial/JJ unit/NN with/IN two/CD bulky/JJ limbs/NNS for/IN gripping/NN ,/, and/CC twin/JJ cannons/NNS built/VBN into/IN the/DT shoulders/NNS ./.	'Aanval' :An aerial unit with two bulky limbs for gripping, and twin cannons built into the shoulders.	Zegapain
 
@@ -403,15 +407,15 @@ AGREE  Dataset
 
 ***GOOD***orange	NN	NN	According/VBG to/IN Matt/NNP Rees/NNP of/IN "/`` Time/NNP "/'' ,/, Palestinian/JJ gunmen/NNS started/VBD shooting/VBG at/IN the/DT Israeli/JJ soldiers/NNS from/IN a/DT nearby/JJ orange/NN grove/NN ./.	According to Matt Rees of "Time", Palestinian gunmen started shooting at the Israeli soldiers from a nearby orange grove.	Muhammad al-Durrah
 
-***BAD***orange	NN	NN	Acridine/NN orange/NN is/VBZ prepared/VBN from/IN coal/NN tar/NN and/CC creosote/VB oil/NN ./.	Acridine orange is prepared from coal tar and creosote oil.	Acridine orange
+***GOOD***orange	NN	NN	Acridine/NN orange/NN is/VBZ prepared/VBN from/IN coal/NN tar/NN and/CC creosote/VB oil/NN ./.	Acridine orange is prepared from coal tar and creosote oil.	Acridine orange
 
-***BAD***orange	NN	NN	Acridine/NN orange/NN (/-LRB- AO/NNP )/-RRB- is/VBZ a/DT nucleic/JJ acid/NN selective/JJ fluorescent/NNP cationic/JJ dye/NN useful/JJ for/IN cell/NN cycle/NN determination/NN ./.	Acridine orange (AO) is a nucleic acid selective fluorescent cationic dye useful for cell cycle determination.	Staining
+***GOOD***orange	NN	NN	Acridine/NN orange/NN (/-LRB- AO/NNP )/-RRB- is/VBZ a/DT nucleic/JJ acid/NN selective/JJ fluorescent/NNP cationic/JJ dye/NN useful/JJ for/IN cell/NN cycle/NN determination/NN ./.	Acridine orange (AO) is a nucleic acid selective fluorescent cationic dye useful for cell cycle determination.	Staining
 
-***BAD***orange	NN	NN	'/`` Acridine/NNP orange/NN '/'' is/VBZ a/DT nucleic/JJ acid/NN selective/JJ fluorescent/NNP cationic/JJ dye/NN useful/JJ for/IN cell/NN cycle/NN determination/NN ./.	'Acridine orange' is a nucleic acid selective fluorescent cationic dye useful for cell cycle determination.	Acridine orange
+***GOOD***orange	NN	NN	'/`` Acridine/NNP orange/NN '/'' is/VBZ a/DT nucleic/JJ acid/NN selective/JJ fluorescent/NNP cationic/JJ dye/NN useful/JJ for/IN cell/NN cycle/NN determination/NN ./.	'Acridine orange' is a nucleic acid selective fluorescent cationic dye useful for cell cycle determination.	Acridine orange
 
-***BAD***orange	NN	NN	Acridine/NN yellow/JJ is/VBZ similar/JJ to/IN acridine/NN orange/NN ./.	Acridine yellow is similar to acridine orange.	Acridine yellow
+***GOOD***orange	NN	NN	Acridine/NN yellow/JJ is/VBZ similar/JJ to/IN acridine/NN orange/NN ./.	Acridine yellow is similar to acridine orange.	Acridine yellow
 
-***BAD***orange	NN	NN	Actually/RB ,/, it/PRP is/VBZ somewhat/RB paler/JJR than/IN actual/JJ apricots/NNS and/CC like/UH the/DT color/NN peach/NN it/PRP seems/VBZ to/TO have/VB been/VBN invented/VBN in/IN order/NN to/TO have/VB at/IN hand/NN a/DT pleasant/JJ pastel/JJ shade/NN of/IN orange/NN for/IN use/NN in/IN interior/JJ design/NN ./.	Actually, it is somewhat paler than actual apricots and like the color peach it seems to have been invented in order to have at hand a pleasant pastel shade of orange for use in interior design.	Apricot (color)
+***GOOD***orange	NN	NN	Actually/RB ,/, it/PRP is/VBZ somewhat/RB paler/JJR than/IN actual/JJ apricots/NNS and/CC like/UH the/DT color/NN peach/NN it/PRP seems/VBZ to/TO have/VB been/VBN invented/VBN in/IN order/NN to/TO have/VB at/IN hand/NN a/DT pleasant/JJ pastel/JJ shade/NN of/IN orange/NN for/IN use/NN in/IN interior/JJ design/NN ./.	Actually, it is somewhat paler than actual apricots and like the color peach it seems to have been invented in order to have at hand a pleasant pastel shade of orange for use in interior design.	Apricot (color)
 
 ***GOOD***precious	JJ	JJ	#/$ Solution/NN Cairo(Nothing/VBG is/VBZ Necessary/NNP Anymore/NNP )/-RRB- #/$ Rolento/NNP #/$ Glass/NNP is/VBZ Broken/VBN #/$ Paris/NNP #/$ Anything/NN for/IN Two/CD #/NN Most/RBS Precious/JJ and/CC Hopeless/JJ #/$ The/DT Dance/NNP of/IN Ones/NNP and/CC Zeros/NNP #/$ The/DT Sound/NNP and/CC Taste/NNP of/IN Tears/NNS Falling/VBG Upon/IN Your/PRP$ Chest/NN #/$ Drift/NN //SYM The/DT Ugly/NNP Side/NN of/IN Things/NNS #/RB Colonized/VBD #/$ A/NN Habit/NN of/IN Rest/NNP Brings/NNP Nothing/NN #/$ Quail/NN	#Solution Cairo(Nothing is Necessary Anymore) #Rolento #Glass is Broken #Paris #Anything for Two #Most Precious and Hopeless #The Dance of Ones and Zeros #The Sound and Taste of Tears Falling Upon Your Chest #Drift / The Ugly Side of Things #Colonized #A Habit of Rest Brings Nothing #Quail	Chicosci
 
@@ -818,7 +822,7 @@ DISAGREE Dataset
 
 ***BADCHANGE***dead	JJ	RB	"/`` All/DT "/`` choppy/JJ ,/, nattery/NN rumormongery/NN letters/NNS dead/JJ -/HYPH end/NN in/IN the/DT DEAD/JJ FILE/NN ./.	"All" choppy, nattery rumormongery letters dead-end in the DEAD FILE.	Dead File
 
-***GOOD***dead	JJ	RB	Across/IN RI/NNP 5/CD ,/, the/DT road/NN dead/JJ ends/VBZ ;/: before/IN the/DT interchange/NN it/PRP continued/VBD onto/IN RI/NNP 33/CD ./.	Across RI 5, the road dead ends; before the interchange it continued onto RI 33.	Meshanticut Interchange
+***BADCHANGE***dead	JJ	RB	Across/IN RI/NNP 5/CD ,/, the/DT road/NN dead/JJ ends/VBZ ;/: before/IN the/DT interchange/NN it/PRP continued/VBD onto/IN RI/NNP 33/CD ./.	Across RI 5, the road dead ends; before the interchange it continued onto RI 33.	Meshanticut Interchange
 
 ***GOOD***dead	JJ	RB	A/DT file/NN 's/POS teeth/NNS can/MD range/VB from/IN rough/JJ ,/, coarse/JJ and/CC bastard/NN (/-LRB- meaning/VBG intermediate/JJ )/-RRB- to/IN second/RB -/HYPH cut/VBN ,/, smooth/JJ and/CC dead/JJ smooth/NN ./.	A file's teeth can range from rough, coarse and bastard (meaning intermediate) to second-cut, smooth and dead smooth.	File (tool)
 
@@ -840,7 +844,7 @@ DISAGREE Dataset
 
 ***GOOD***dead	RB	JJ	;/: dead/RB blind/JJ :/: A/DT blind/JJ that/WDT is/VBZ not/RB "/`` live/JJ "/'' ,/, in/IN that/IN the/DT player/NN posting/VBG it/PRP does/VBZ not/RB have/VB the/DT option/NN to/TO raise/VB if/IN other/JJ players/NNS just/RB call/VBP ./.	; dead blind : A blind that is not "live", in that the player posting it does not have the option to raise if other players just call.	Glossary of poker terms
 
-***GOOD***dead	RB	JJ	;/: drawing/VBG dead/RB :/: Playing/VBG a/DT drawing/NN hand/NN that/WDT will/MD lose/VB even/RB if/IN successful/JJ (/-LRB- a/DT state/NN of/IN affairs/NNS usually/RB only/RB discovered/VBN after/IN the/DT fact/NN or/CC in/IN a/DT tournament/NN when/WRB two/CD or/CC more/JJR players/NNS are/VBP "/`` all/RB in/IN "/'' and/CC they/PRP show/VBP their/PRP$ cards/NNS )/-RRB- ./.	; drawing dead : Playing a drawing hand that will lose even if successful (a state of affairs usually only discovered after the fact or in a tournament when two or more players are "all in" and they show their cards).	Glossary of poker terms
+***BADCHANGE***dead	RB	JJ	;/: drawing/VBG dead/RB :/: Playing/VBG a/DT drawing/NN hand/NN that/WDT will/MD lose/VB even/RB if/IN successful/JJ (/-LRB- a/DT state/NN of/IN affairs/NNS usually/RB only/RB discovered/VBN after/IN the/DT fact/NN or/CC in/IN a/DT tournament/NN when/WRB two/CD or/CC more/JJR players/NNS are/VBP "/`` all/RB in/IN "/'' and/CC they/PRP show/VBP their/PRP$ cards/NNS )/-RRB- ./.	; drawing dead : Playing a drawing hand that will lose even if successful (a state of affairs usually only discovered after the fact or in a tournament when two or more players are "all in" and they show their cards).	Glossary of poker terms
 
 ***GOOD***dead	RB	JJ	Finding/NNP Alex/NNP dead/RB along/IN with/IN Doctor/NNP Morris/NNP Panov/NNP ,/, Bourne/NNP realises/VBZ the/DT trap/NN as/RB soon/RB as/IN he/PRP hears/VBZ the/DT police/NN arriving/VBG ./.	Finding Alex dead along with Doctor Morris Panov, Bourne realises the trap as soon as he hears the police arriving.	The Bourne Legacy
 
@@ -994,7 +998,7 @@ DISAGREE Dataset
 
 ***BADCHANGE***prevailing	JJ	VBG	=/NNS =/VBZ Winds/NNS by/IN scale==/JJ =/NN =/NN =/JJ Prevailing/JJ winds/NNS -/: the/DT general/JJ circulation/NN of/IN the/DT atmosphere===/NNS Prevailing/NNP winds/NNS are/VBP winds/NNS which/WDT come/VBP about/RP as/IN a/DT consequence/NN of/IN global/JJ circulation/NN patterns/NNS ./.	==Winds by scale== ===Prevailing winds - the general circulation of the atmosphere=== Prevailing winds are winds which come about as a consequence of global circulation patterns.	Wind
 
-***UNSURE***prevailing	JJ	VBG	=/NN =/VBG Prevailing/JJ winds/NNS and/CC sands==/NN The/DT prevailing/VBG winds/NNS in/IN this/DT region/NN would/MD appear/VB to/TO blow/VB from/IN the/DT west/NN and/CC northwest/NN during/IN the/DT summer/NN ,/, winter/NN and/CC autumn/NN ./.	==Prevailing winds and sands== The prevailing winds in this region would appear to blow from the west and northwest during the summer, winter and autumn.	Kum-tagh Desert
+***BADCHANGE***prevailing	JJ	VBG	=/NN =/VBG Prevailing/JJ winds/NNS and/CC sands==/NN The/DT prevailing/VBG winds/NNS in/IN this/DT region/NN would/MD appear/VB to/TO blow/VB from/IN the/DT west/NN and/CC northwest/NN during/IN the/DT summer/NN ,/, winter/NN and/CC autumn/NN ./.	==Prevailing winds and sands== The prevailing winds in this region would appear to blow from the west and northwest during the summer, winter and autumn.	Kum-tagh Desert
 
 ***BADCHANGE***prevailing	JJ	VBG	Some/DT fishing/NN boats/NNS utilise/VBP the/DT anchorage/NN when/WRB prevailing/JJ weather/NN is/VBZ not/RB a/DT problem/NN ./.	Some fishing boats utilise the anchorage when prevailing weather is not a problem.	Hamelin Bay, Western Australia
 
@@ -1078,19 +1082,19 @@ DISAGREE Dataset
 
 ***BADCHANGE***short	JJ	RB	A/DT new/JJ and/CC short/JJ -/HYPH lived/VBN option/NN for/IN 1970/CD was/VBD the/DT Vacuum/NNP Operated/NNP Exhaust/NNP (/-LRB- VOE/NNP )/-RRB- ,/, which/WDT was/VBD vacuum/NN actuated/VBN via/IN an/DT underdash/NN lever/NN marked/VBD "/`` EXHAUST/NNP ./.	A new and short-lived option for 1970 was the Vacuum Operated Exhaust (VOE), which was vacuum actuated via an underdash lever marked "EXHAUST.	Pontiac GTO
 
-***BADCHANGE***short	RB	JJ	According/VBG to/IN the/DT official/JJ version/NN ,/, the/DT short/RB -/HYPH armed/VBN bread/NN character/NN made/VBD its/PRP$ first/JJ appearance/NN as/IN part/NN of/IN an/DT advertising/NN campaign/NN for/IN a/DT bakery/NN chain/NN ./.	According to the official version, the short-armed bread character made its first appearance as part of an advertising campaign for a bakery chain.	Bernd das Brot
+***GOOD***short	RB	JJ	According/VBG to/IN the/DT official/JJ version/NN ,/, the/DT short/RB -/HYPH armed/VBN bread/NN character/NN made/VBD its/PRP$ first/JJ appearance/NN as/IN part/NN of/IN an/DT advertising/NN campaign/NN for/IN a/DT bakery/NN chain/NN ./.	According to the official version, the short-armed bread character made its first appearance as part of an advertising campaign for a bakery chain.	Bernd das Brot
 
-***BADCHANGE***short	RB	JJ	Active/JJ from/IN 1983/CD to/IN 1984/CD ,/, it/PRP was/VBD a/DT short/RB -/HYPH lived/VBN attempt/NN to/TO revive/VB the/DT Rare/NNP Earth/NNP Records/NNPS concept/NN ./.	Active from 1983 to 1984, it was a short-lived attempt to revive the Rare Earth Records concept.	Motown Records
+***GOOD***short	RB	JJ	Active/JJ from/IN 1983/CD to/IN 1984/CD ,/, it/PRP was/VBD a/DT short/RB -/HYPH lived/VBN attempt/NN to/TO revive/VB the/DT Rare/NNP Earth/NNP Records/NNPS concept/NN ./.	Active from 1983 to 1984, it was a short-lived attempt to revive the Rare Earth Records concept.	Motown Records
 
-***BADCHANGE***short	RB	JJ	Adapted/VBN to/IN a/DT fossorial/JJ lifestyle/NN ,/, they/PRP were/VBD rather/RB short/RB -/HYPH legged/JJ and/CC resembled/VBD a/DT small/JJ groundhog/NNS in/IN overall/JJ shape/NN but/CC had/VBD quite/RB long/JJ claws/NNS for/IN digging/VBG tunnels/NNS ./.	Adapted to a fossorial lifestyle, they were rather short-legged and resembled a small groundhog in overall shape but had quite long claws for digging tunnels.	Mylagaulidae
+***GOOD***short	RB	JJ	Adapted/VBN to/IN a/DT fossorial/JJ lifestyle/NN ,/, they/PRP were/VBD rather/RB short/RB -/HYPH legged/JJ and/CC resembled/VBD a/DT small/JJ groundhog/NNS in/IN overall/JJ shape/NN but/CC had/VBD quite/RB long/JJ claws/NNS for/IN digging/VBG tunnels/NNS ./.	Adapted to a fossorial lifestyle, they were rather short-legged and resembled a small groundhog in overall shape but had quite long claws for digging tunnels.	Mylagaulidae
 
-***BADCHANGE***short	RB	JJ	Added/VBN to/IN this/DT ,/, Roger/NNP is/VBZ very/RB short/RB -/HYPH tempered/VBN -/, mainly/RB with/IN Kel/NNP ./.	Added to this, Roger is very short-tempered - mainly with Kel.	Kenan & Kel
+***GOOD***short	RB	JJ	Added/VBN to/IN this/DT ,/, Roger/NNP is/VBZ very/RB short/RB -/HYPH tempered/VBN -/, mainly/RB with/IN Kel/NNP ./.	Added to this, Roger is very short-tempered - mainly with Kel.	Kenan & Kel
 
-***BADCHANGE***short	RB	JJ	A/DT colony/NN of/IN around/IN 300/CD Short/RB -/HYPH tailed/VBN Bats/NNPS was/VBD also/RB found/VBN in/IN the/DT Waiohine/NNP Valley/NNP of/IN the/DT Tararua/NNP Forest/NNP Park/NNP in/IN the/DT late/JJ 1990s/NNS ./.	A colony of around 300 Short-tailed Bats was also found in the Waiohine Valley of the Tararua Forest Park in the late 1990s.	New Zealand Lesser Short-tailed Bat
+***GOOD***short	RB	JJ	A/DT colony/NN of/IN around/IN 300/CD Short/RB -/HYPH tailed/VBN Bats/NNPS was/VBD also/RB found/VBN in/IN the/DT Waiohine/NNP Valley/NNP of/IN the/DT Tararua/NNP Forest/NNP Park/NNP in/IN the/DT late/JJ 1990s/NNS ./.	A colony of around 300 Short-tailed Bats was also found in the Waiohine Valley of the Tararua Forest Park in the late 1990s.	New Zealand Lesser Short-tailed Bat
 
-***BADCHANGE***short	RB	JJ	A/DT few/JJ owls/NNS are/VBP also/RB active/JJ during/IN the/DT day/NN ;/: examples/NNS are/VBP the/DT Burrowing/NNP Owl/NNP (/-LRB- "/`` Speotyto/NNP cunicularia/NN )/-RRB- "/'' and/CC the/DT Short/RB -/HYPH eared/VBN Owl/NNP (/-LRB- "/`` Asio/NNP flammeus/NN "/'' )/-RRB- ./.	A few owls are also active during the day; examples are the Burrowing Owl ("Speotyto cunicularia)" and the Short-eared Owl ("Asio flammeus").	Owl
+***GOOD***short	RB	JJ	A/DT few/JJ owls/NNS are/VBP also/RB active/JJ during/IN the/DT day/NN ;/: examples/NNS are/VBP the/DT Burrowing/NNP Owl/NNP (/-LRB- "/`` Speotyto/NNP cunicularia/NN )/-RRB- "/'' and/CC the/DT Short/RB -/HYPH eared/VBN Owl/NNP (/-LRB- "/`` Asio/NNP flammeus/NN "/'' )/-RRB- ./.	A few owls are also active during the day; examples are the Burrowing Owl ("Speotyto cunicularia)" and the Short-eared Owl ("Asio flammeus").	Owl
 
-***BADCHANGE***short	RB	JJ	A/DT '/`` glitch/NN '/'' is/VBZ a/DT short/RB -/HYPH lived/VBN fault/NN in/IN a/DT system/NN ./.	A 'glitch' is a short-lived fault in a system.	Glitch
+***GOOD***short	RB	JJ	A/DT '/`` glitch/NN '/'' is/VBZ a/DT short/RB -/HYPH lived/VBN fault/NN in/IN a/DT system/NN ./.	A 'glitch' is a short-lived fault in a system.	Glitch
 
 ***GOOD***short	RB	JJ	A/DT Leeds/NNP fan/NN himself/PRP ,/, he/PRP cut/VBD short/RB a/DT holiday/NN in/IN Orlando/NNP to/TO join/VB the/DT Elland/NNP Road/NNP outfit/NN ./.	A Leeds fan himself, he cut short a holiday in Orlando to join the Elland Road outfit.	Dan Harding
 
@@ -1102,7 +1106,7 @@ DISAGREE Dataset
 
 ***UNSURE***standing	JJ	VBG	Alexander/NNP 's/POS great/JJ grandson/NN ,/, Ivan/NNP II/NNP ,/, was/VBD the/DT first/JJ ruler/NN of/IN Moscow/NNP to/TO employ/VB as/IN his/PRP$ emblem/NN the/DT standing/JJ warrior/NN with/IN a/DT sword/NN in/IN his/PRP$ hand/NN ./.	Alexander's great grandson, Ivan II, was the first ruler of Moscow to employ as his emblem the standing warrior with a sword in his hand.	Coat of arms of Moscow
 
-***UNSURE***standing	JJ	VBG	Although/IN "/`` Gilgal/NNP "/'' is/VBZ phonetically/RB similar/JJ to/IN "/`` gallothi/VB "/'' ,/, meaning/VBG "/`` I/PRP have/VBP removed/VBN "/'' in/IN Hebrew/NNP ,/, some/DT believe/VBP that/IN it/PRP is/VBZ more/RBR likely/JJ that/IN "/`` Gilgal/NNP "/'' means/VBZ "/`` circle/NN of/IN standing/JJ stones/NNS "/'' ,/, and/CC refers/VBZ to/IN the/DT stone/NN circle/NN that/WDT was/VBD there/RB ./.	Although "Gilgal" is phonetically similar to "gallothi", meaning "I have removed" in Hebrew, some believe that it is more likely that "Gilgal" means "circle of standing stones", and refers to the stone circle that was there.	Gilgal
+***BADCHANGE***standing	JJ	VBG	Although/IN "/`` Gilgal/NNP "/'' is/VBZ phonetically/RB similar/JJ to/IN "/`` gallothi/VB "/'' ,/, meaning/VBG "/`` I/PRP have/VBP removed/VBN "/'' in/IN Hebrew/NNP ,/, some/DT believe/VBP that/IN it/PRP is/VBZ more/RBR likely/JJ that/IN "/`` Gilgal/NNP "/'' means/VBZ "/`` circle/NN of/IN standing/JJ stones/NNS "/'' ,/, and/CC refers/VBZ to/IN the/DT stone/NN circle/NN that/WDT was/VBD there/RB ./.	Although "Gilgal" is phonetically similar to "gallothi", meaning "I have removed" in Hebrew, some believe that it is more likely that "Gilgal" means "circle of standing stones", and refers to the stone circle that was there.	Gilgal
 
 ***BADCHANGE***standing	JJ	VBG	Amato/NNP is/VBZ a/DT founding/VBG member/NN of/IN Torngat/NNP ,/, his/PRP$ longest/JJS standing/JJ musical/JJ project/NN ./.	Amato is a founding member of Torngat, his longest standing musical project.	Pietro Amato
 
@@ -1118,7 +1122,7 @@ DISAGREE Dataset
 
 ***BADCHANGE***standing	JJ	VBG	Dunninger/NNP had/VBD a/DT standing/JJ offer/NN of/IN $/$ 10,000/CD to/IN anyone/NN who/WP could/MD prove/VB that/IN he/PRP used/VBD confederates/NNS or/CC "/`` stooges/NNS "/'' ./.	Dunninger had a standing offer of $10,000 to anyone who could prove that he used confederates or "stooges".	Joseph Dunninger
 
-***UNSURE***standing	VBG	JJ	A/DT drag/NN race/NN is/VBZ an/DT acceleration/NN contest/NN from/IN a/DT standing/VBG start/NN between/IN two/CD vehicles/NNS side/NN by/IN side/NN over/IN a/DT measured/JJ distance/NN ./.	A drag race is an acceleration contest from a standing start between two vehicles side by side over a measured distance.	Drag racing
+***GOOD***standing	VBG	JJ	A/DT drag/NN race/NN is/VBZ an/DT acceleration/NN contest/NN from/IN a/DT standing/VBG start/NN between/IN two/CD vehicles/NNS side/NN by/IN side/NN over/IN a/DT measured/JJ distance/NN ./.	A drag race is an acceleration contest from a standing start between two vehicles side by side over a measured distance.	Drag racing
 
 ***GOOD***standing	VBG	JJ	A/DT few/JJ areas/NNS have/VBP persistent/JJ standing/VBG water/NN with/IN most/JJS rains/NNS ./.	A few areas have persistent standing water with most rains.	Monroe Township, Snyder County, Pennsylvania
 
@@ -1126,7 +1130,7 @@ DISAGREE Dataset
 
 ***GOOD***standing	VBG	JJ	A/DT '/`` splash/NN pad/NN '/'' is/VBZ an/DT area/NN for/IN water/NN play/NN that/WDT has/VBZ no/DT standing/VBG water/NN ./.	A 'splash pad' is an area for water play that has no standing water.	Splash pad
 
-***UNSURE***standing	VBG	JJ	A/DT standing/VBG start/NN occurs/VBZ when/WRB horses/NNS stand/VBP flat/JJ footed/VBN behind/IN an/DT elastic/JJ tape/NN that/WDT is/VBZ connected/VBN across/IN the/DT track/NN ./.	A standing start occurs when horses stand flat footed behind an elastic tape that is connected across the track.	Harness racing in Australia
+***GOOD***standing	VBG	JJ	A/DT standing/VBG start/NN occurs/VBZ when/WRB horses/NNS stand/VBP flat/JJ footed/VBN behind/IN an/DT elastic/JJ tape/NN that/WDT is/VBZ connected/VBN across/IN the/DT track/NN ./.	A standing start occurs when horses stand flat footed behind an elastic tape that is connected across the track.	Harness racing in Australia
 
 ***GOOD******standing	VBG	JJ	A/DT world/NN record/NN crowd/NN of/IN 63,993/CD gave/VBD him/PRP a/DT standing/VBG ovation/NN that/WDT went/VBD on/RP so/RB long/RB that/IN it/PRP delayed/VBD play/NN for/IN several/JJ minutes/NNS ./.	A world record crowd of 63,993 gave him a standing ovation that went on so long that it delayed play for several minutes.	Donald Bradman
 
