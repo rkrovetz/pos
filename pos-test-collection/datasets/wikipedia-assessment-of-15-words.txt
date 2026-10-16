@@ -55,7 +55,7 @@ Grand total: 180+153+192 = 525 (out of possible 600 (87.5%))
 
 The numbers X+Y means "GOOD+UNSURE".  I scored them as if "UNSURE" was considered correct.
 
-Total:  The range is 71% to 83% for Agree, and 55% to 69% for disagree.
+Total:  The range is 71% to 82% for Agree, and 54% to 69% for disagree.
 
 These lines below are the individual judgments for the AGREE and DISAGREE 
 datasets. I used "***GOOD*** to indicate that the tagging is correct, and
